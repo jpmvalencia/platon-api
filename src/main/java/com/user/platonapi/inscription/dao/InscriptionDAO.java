@@ -13,6 +13,16 @@ public class InscriptionDAO {
         return inscriptions;
     }
 
+    public List<Inscription> getInscriptionsByCareer(String career) {
+        List<Inscription> careerInscriptions = new ArrayList<>();
+        for (Inscription inscription : inscriptions) {
+            if (inscription.getCareer().equals(career)) {
+                careerInscriptions.add(inscription);
+            }
+        }
+        return careerInscriptions;
+    }
+
     public void addInscription(Inscription inscription) {
         inscription.setId(idCounter++);
         inscriptions.add(inscription);

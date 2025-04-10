@@ -25,6 +25,16 @@ public class InscriptionService {
         );
     }
 
+    public SuccessResponse<Inscription> getInscriptionsByCareer(String career) {
+        List<Inscription> inscriptions = inscriptionDAO.getInscriptionsByCareer(career);
+
+        return new SuccessResponse<>(
+                "inscriptions retrieved successfully",
+                200,
+                inscriptions
+        );
+    }
+
     public SuccessResponse<Inscription> addInscription(InscriptionDTO inscriptionDTO) throws Exception {
         Inscription inscription = new Inscription(
                 inscriptionDTO.getStudent(),
