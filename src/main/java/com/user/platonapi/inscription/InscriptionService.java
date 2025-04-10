@@ -36,7 +36,7 @@ public class InscriptionService {
     }
 
     public SuccessResponse<Inscription> addInscription(InscriptionDTO inscriptionDTO) throws Exception {
-        if (!inscriptionDTO.getStatus().equals("Active") || !inscriptionDTO.getStatus().equals("Cancelled")) {
+        if (!inscriptionDTO.getStatus().equals("Active") && !inscriptionDTO.getStatus().equals("Cancelled")) {
             throw new Exception("inscription status is not Active or Cancelled");
         }
 
