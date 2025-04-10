@@ -15,6 +15,16 @@ public class InscriptionService {
         this.inscriptionDAO = inscriptionDAO;
     }
 
+    public SuccessResponse<Inscription> getInscriptions() {
+        List<Inscription> inscriptions = inscriptionDAO.getInscriptions();
+
+        return new SuccessResponse(
+                "inscriptions retrieved successfully",
+                200,
+                inscriptions
+        );
+    }
+
     public SuccessResponse<Inscription> addInscription(InscriptionDTO inscriptionDTO) throws Exception {
         Inscription inscription = new Inscription(
                 inscriptionDTO.getStudent(),

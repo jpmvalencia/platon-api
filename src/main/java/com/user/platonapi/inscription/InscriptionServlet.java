@@ -26,6 +26,25 @@ public class InscriptionServlet extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            SuccessResponse successResponse = inscriptionService.getInscriptions();
+
+            String jsonSuccessResponse = gson.toJson(successResponse);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write(jsonSuccessResponse);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500);
+            String jsonErrorResponse = gson.toJson(errorResponse);
+
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.setContentType("application/json");
+            resp.getWriter().write(jsonErrorResponse);
+        }
+    }
+
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         InscriptionDTO inscriptionDTO = gson.fromJson(req.getReader(), InscriptionDTO.class);
 

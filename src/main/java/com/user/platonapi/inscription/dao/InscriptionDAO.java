@@ -9,6 +9,10 @@ public class InscriptionDAO {
     private List<Inscription> inscriptions = new ArrayList<>();
     private static int idCounter = 1;
 
+    public List<Inscription> getInscriptions() {
+        return inscriptions;
+    }
+
     public void addInscription(Inscription inscription) {
         inscription.setId(idCounter++);
         inscriptions.add(inscription);
