@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "InscriptionServlet", urlPatterns = "/inscriptions")
+@WebServlet(name = "InscriptionServlet", urlPatterns = "/inscriptions/*")
 public class InscriptionServlet extends HttpServlet {
     private InscriptionService inscriptionService;
     private Gson gson;
@@ -27,20 +27,42 @@ public class InscriptionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            SuccessResponse successResponse = inscriptionService.getInscriptions();
+        String pathInfo = req.getPathInfo();
 
-            String jsonSuccessResponse = gson.toJson(successResponse);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            resp.getWriter().write(jsonSuccessResponse);
-        } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500);
-            String jsonErrorResponse = gson.toJson(errorResponse);
+        if (pathInfo == null || pathInfo.equals("/")) {
+            try {
+                SuccessResponse successResponse = inscriptionService.getInscriptions();
 
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.setContentType("application/json");
-            resp.getWriter().write(jsonErrorResponse);
+                String jsonSuccessResponse = gson.toJson(successResponse);
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().write(jsonSuccessResponse);
+            } catch (Exception e) {
+                ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500);
+                String jsonErrorResponse = gson.toJson(errorResponse);
+
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setContentType("application/json");
+                resp.getWriter().write(jsonErrorResponse);
+            }
+        } else if (pathInfo.matches("/career")) {
+            String career = req.getParameter("name");
+
+            try {
+                SuccessResponse successResponse = inscriptionService.getInscriptionsByCareer(career);
+
+                String jsonSuccessResponse = gson.toJson(successResponse);
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().write(jsonSuccessResponse);
+            } catch (Exception e) {
+                ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500);
+                String jsonErrorResponse = gson.toJson(errorResponse);
+
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setContentType("application/json");
+                resp.getWriter().write(jsonErrorResponse);
+            }
         }
     }
 
